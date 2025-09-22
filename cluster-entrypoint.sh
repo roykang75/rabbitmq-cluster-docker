@@ -13,10 +13,12 @@ if [ -z "$JOIN_CLUSTER_HOST" ]; then
     /usr/local/bin/docker-entrypoint.sh rabbitmq-server &
     sleep 5
     rabbitmqctl wait /var/lib/rabbitmq/mnesia/rabbit\@$HOSTNAME.pid
+    rabbitmq-plugins enable rabbitmq_stream
 else
     /usr/local/bin/docker-entrypoint.sh rabbitmq-server -detached
     sleep 5
     rabbitmqctl wait /var/lib/rabbitmq/mnesia/rabbit\@$HOSTNAME.pid
+    rabbitmq-plugins enable rabbitmq_stream
     rabbitmqctl stop_app
     rabbitmqctl join_cluster rabbit@$JOIN_CLUSTER_HOST
     rabbitmqctl start_app
